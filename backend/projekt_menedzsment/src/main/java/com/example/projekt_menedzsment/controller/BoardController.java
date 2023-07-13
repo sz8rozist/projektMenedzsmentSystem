@@ -28,29 +28,27 @@ public class BoardController {
     }
 
     @PutMapping("/boardColumn/{board_column_id}")
-    public ResponseEntity<BoardColumn> updateBoardColumn(@RequestBody Long new_board_id, @PathVariable Long board_column_id){
+    public ResponseEntity<?> updateBoardColumn(@RequestBody Long new_board_id, @PathVariable Long board_column_id){
         BoardColumn updated = boardService.updateBoardColumn(new_board_id, board_column_id);
         if(updated != null){
             return ResponseEntity.ok(updated);
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt");
     }
 
     @PostMapping("/board/{projekt_id}")
-    public ResponseEntity<Board> newBoard(@RequestBody Board newBoard, @PathVariable Long projekt_id){
+    public ResponseEntity<?> newBoard(@RequestBody Board newBoard, @PathVariable Long projekt_id){
         System.out.println(newBoard);
         Board board = boardService.insert(newBoard, projekt_id);
-        HttpHeaders httpHeaders = new HttpHeaders();
         if(board != null){
-            httpHeaders.add("board","/api/board/" + board.getId().toString());
-            return new ResponseEntity<>(board,httpHeaders, HttpStatus.CREATED);
+            return ResponseEntity.ok(board);
         }
-        return new ResponseEntity<>(null, httpHeaders, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt");
     }
 
     @DeleteMapping("/board/{boardId}")
-    public ResponseEntity<Board> deleteBoard(@PathVariable("boardId") Long board_id) {
+    public ResponseEntity<?> deleteBoard(@PathVariable("boardId") Long board_id) {
         boardService.deleteBoard(board_id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok("Sikeres törlés");
     }
 }
