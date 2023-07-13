@@ -1,0 +1,38 @@
+  <div class="columns is-multiline cards-container" id="sectioncontainer" cdkDropListGroup>
+      <div class="column" *ngFor="let board of board">
+          <article class="message is-info" cdkDropList
+          [cdkDropListData]="board.boardColumns"
+          (cdkDropListDropped)="drop($event)">
+              <div class="message-header">
+                  <p>{{board.name}}</p>
+                  <button class="delete" aria-label="delete" (click)="onDelete(board.id)"></button>
+              </div>
+              <div class="message-body tasks-container">
+                  <div class="board-item" *ngFor="let item of board.boardColumns">
+                      <div class="board-item-content" cdkDrag><span>{{item.name}}</span></div>
+                  </div>
+              </div>
+          </article>
+      </div> 
+      <div class="column">
+        <article class="message is-info">
+            <div class="message-header">
+                <p>Új kártya</p>
+            </div>
+            <div class="message-body tasks-container">
+              <form [formGroup]="boardForm">
+                <div class="field">
+                  <input
+                    class="input is-normal"
+                    formControlName="name"
+                    type="text"
+                    placeholder="Tábla neve"
+                  />
+                </div>
+                <button (click)="onSubmit()" class="button is-normal is-fullwidth">Hozzáadás</button>
+              </form>
+            </div>
+        </article>
+    </div> 
+  </div>
+

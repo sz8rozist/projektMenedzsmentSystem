@@ -24,7 +24,7 @@ public class UserService {
         Date expiryDate = new Date(now.getTime() + 3600000); // 1 órás lejárati idő
         SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
         return Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(String.valueOf(user.getId()))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)

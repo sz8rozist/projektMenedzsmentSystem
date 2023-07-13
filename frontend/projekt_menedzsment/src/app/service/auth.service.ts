@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../model/User';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
-import { Response } from '../model/Response';
+import { Response } from '../model/LoginResponse';
 import { Router } from '@angular/router';
 
 @Injectable({

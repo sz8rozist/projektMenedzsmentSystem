@@ -10,18 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 15000)
 public class UserController {
-    @Autowired
+
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/get")
-    public String valami(){
-        return "HAHA";
     }
 
     @PostMapping("/login")

@@ -1,11 +1,12 @@
 
-import { Component } from '@angular/core';
+
 import { AuthService } from '../service/auth.service';
 import { User } from '../model/User';
 import {FormGroup, Validators, FormControl} from '@angular/forms';
-import { Response } from '../model/Response';
-import { Router } from '@angular/router';
+import { Response } from '../model/LoginResponse';
 import { timer } from 'rxjs';
+import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
 
 @Component({
