@@ -39,6 +39,7 @@ export class SigninComponent {
     }
     this.authService.signin(user).subscribe(
       (response: Response) => {
+        console.log(response);
         if(response.statusCode === 200){
           localStorage.setItem("token", response.jwtToken);
           timer(500).subscribe(() => { 
