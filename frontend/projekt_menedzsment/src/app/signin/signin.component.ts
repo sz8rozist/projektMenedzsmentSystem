@@ -3,8 +3,6 @@
 import { AuthService } from '../service/auth.service';
 import { User } from '../model/User';
 import {FormGroup, Validators, FormControl} from '@angular/forms';
-import { Response } from '../model/LoginResponse';
-import { timer } from 'rxjs';
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
@@ -29,7 +27,10 @@ export class SigninComponent {
     ){}
 
   ngOnInit(){
-    console.log("init");
+    const authenticated = this.authService.isAuthenticated();
+    if(authenticated){
+      this.router.navigate(["/home"]);
+    }
   }
 
   onSignin(){
