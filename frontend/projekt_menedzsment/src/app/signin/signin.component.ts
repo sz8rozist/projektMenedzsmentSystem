@@ -38,18 +38,14 @@ export class SigninComponent {
       password: this.signinForm.get('password')?.value as string,
     }
     this.authService.signin(user).subscribe(
-      (response: Response) => {
+      (response) => {
         console.log(response);
-        if(response.statusCode === 200){
-          localStorage.setItem("token", response.jwtToken);
-          timer(500).subscribe(() => { 
-            this.router.navigate(["/home"]);
-          });
+        if(response.token != null){
+          localStorage.setItem("token", response.token);
+          this.router.navigate(["/home"]);
         }else{
           //Sikertelen login
-          timer(500).subscribe(() => {
-            this.errorMsg = response.message;
-          });
+            this.errorMsg = "Sikertelen bejelentkezés";
         }
       },
       error => {

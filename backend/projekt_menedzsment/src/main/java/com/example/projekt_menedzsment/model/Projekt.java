@@ -1,5 +1,7 @@
 package com.example.projekt_menedzsment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,7 @@ public class Projekt {
     private String name;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
     @OneToMany(mappedBy = "projekt")
     private List<Board> boards;

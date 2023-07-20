@@ -18,6 +18,16 @@ export class BoardComponent {
   board: Board[] = [];
 
   boardForm: FormGroup;
+
+  showModal = false;
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+  }
   constructor(
     private projektService: ProjectService,
     private route: ActivatedRoute
@@ -39,6 +49,7 @@ export class BoardComponent {
   }
 
   drop(event: CdkDragDrop<any[]>) {
+    //console.log(event);
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -46,7 +57,7 @@ export class BoardComponent {
         event.currentIndex
       );
     } else {
-      const destinationColumnId = event.container.id.split('-').pop(); // Cél oszlop azonosítója
+      var destinationColumnId = event.container.id.split('-').pop(); // Cél oszlop azonosítója
       var destinationColumn = undefined;
       for (const key in this.board) {
         if (key == destinationColumnId) {
@@ -58,7 +69,7 @@ export class BoardComponent {
         board_id: destinationColumn,
       };
       for (const [key, value] of Object.entries(event.previousContainer.data)) {
-        console.log(key, value);
+       // console.log(key, value);
         boardColumn.id = value.id;
       }
 
@@ -91,6 +102,7 @@ export class BoardComponent {
       this.projektService.newBoard(board, Number(projekt_id)).subscribe(
         (result) => {
           console.log(result);
+          this.boardForm.reset();
           this.loadBoard();
         },
         (error) => console.log(error)

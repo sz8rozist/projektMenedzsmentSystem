@@ -1,4 +1,5 @@
 package com.example.projekt_menedzsment.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Board {
     private String name;
     @ManyToOne
     @JoinColumn(name = "projekt_id")
+    @JsonBackReference
     private Projekt projekt;
     @OneToMany(mappedBy = "board")
     private List<BoardColumn> boardColumns;

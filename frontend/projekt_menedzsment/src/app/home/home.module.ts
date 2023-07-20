@@ -7,11 +7,15 @@ import { BoardComponent } from './board/board.component';
 import { ProjektListComponent } from './projekt-list/projekt-list.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { ModalComponent } from './modal/modal.component';
 @NgModule({
   declarations: [
     HomeComponent,
     BoardComponent,
-    ProjektListComponent
+    ProjektListComponent,
+    SidebarComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,

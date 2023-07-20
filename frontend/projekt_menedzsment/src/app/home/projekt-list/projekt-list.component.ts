@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Projekt } from 'src/app/model/Projekt';
 
 @Component({
@@ -9,4 +10,10 @@ import { Projekt } from 'src/app/model/Projekt';
 export class ProjektListComponent {
 
   @Input() projects?: Projekt[];
+
+  constructor(private router: Router){}
+
+  loadBoard(project: Projekt){
+    this.router.navigate(["/home/board",project.id]);
+  }
 }
