@@ -9,9 +9,9 @@ import { ProjectService } from 'src/app/service/project.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
   username: string = "";
   projects: Projekt[] = [];
+  showDrawer = false;
 
   constructor(
     private authService: AuthService,
@@ -28,5 +28,18 @@ export class HomeComponent {
 
   onLogout(){
     this.authService.logout();
+  }
+
+  openDrawer() {
+    this.showDrawer = true;
+  }
+
+  closeDrawer() {
+    this.showDrawer = false;
+  }
+
+  onNewProjektAdded(newProjekt: Projekt) {
+    console.log(newProjekt);
+    this.projects.push(newProjekt);
   }
 }

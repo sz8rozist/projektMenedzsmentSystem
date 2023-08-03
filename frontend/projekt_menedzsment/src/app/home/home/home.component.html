@@ -1,4 +1,5 @@
 <app-sidebar></app-sidebar>
-<div class="p-4 md:ml-64 h-auto pt-20">
-  <app-projekt-list [projects]="projects"></app-projekt-list>
+<div class="md:ml-64 h-auto pt-20">
+  <app-projekt-list (drawerEvent)="openDrawer()" *ngIf="projects.length > 0" [projects]="projects"></app-projekt-list>
+  <app-drawer (newProjektEvent)="onNewProjektAdded($event)" [showDrawer]="showDrawer" (closeDrawer)="closeDrawer()"></app-drawer>
 </div>

@@ -10,14 +10,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./signin.component.css'],
 })
 export class SigninComponent {
-  signinForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-  });
+  signinForm: FormGroup;
 
   errorMsg: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+    this.signinForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
+  }
 
   ngOnInit() {
     const authenticated = this.authService.isAuthenticated();
@@ -27,24 +29,26 @@ export class SigninComponent {
   }
 
   onSignin() {
-    const user: User = {
-      username: this.signinForm.get('username')?.value as string,
-      password: this.signinForm.get('password')?.value as string,
-    };
-    this.authService.signin(user).subscribe(
-      (response) => {
-        console.log(response);
-        if (response.token != null) {
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/home']);
-        } else {
-          //Sikertelen login
-          this.errorMsg = 'Sikertelen bejelentkezés';
+    if (this.signinForm.valid) {
+      const user: User = {
+        username: this.signinForm.get('username')?.value as string,
+        password: this.signinForm.get('password')?.value as string,
+      };
+      this.authService.signin(user).subscribe(
+        (response) => {
+          if (response.token != null) {
+            const user = {token: response.token, username: response.username, email: response.email, img: response.img, id: response.id}
+            localStorage.setItem('login', JSON.stringify(user));
+            this.router.navigate(['/home']);
+          } else {
+            //Sikertelen login
+            this.errorMsg = 'Sikertelen bejelentkezés';
+          }
+        },
+        (error) => {
+          console.log(error);
         }
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+      );
+    }
   }
 }

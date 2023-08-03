@@ -1,7 +1,7 @@
 export interface Projekt {
     id?: number;
     name: string;
-    user: {
+    user?: {
       id: number;
       username: string;
       password: string;

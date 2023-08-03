@@ -9,11 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HomeModule } from './home/home.module';
+import { SignupComponent } from './signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
     SigninComponent,
     NotFoundComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

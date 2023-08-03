@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/board")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class BoardController {
     private final BoardService boardService;
@@ -19,7 +19,7 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/board/{projekt_id}")
+    @GetMapping("/{projekt_id}")
     public List<Board> getBoardByProjektId(@PathVariable Long projekt_id){
         return boardService.getBoardByProjektId(projekt_id);
     }
@@ -34,9 +34,8 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/board/{projekt_id}")
+    @PostMapping("/{projekt_id}")
     public ResponseEntity<?> newBoard(@RequestBody Board newBoard, @PathVariable Long projekt_id){
-        System.out.println(newBoard);
         Board board = boardService.insert(newBoard, projekt_id);
         if(board != null){
             return ResponseEntity.ok(board);
@@ -44,7 +43,7 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt");
     }
 
-    @DeleteMapping("/board/{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable("boardId") Long board_id) {
         boardService.deleteBoard(board_id);
         return new ResponseEntity<>(HttpStatus.OK);

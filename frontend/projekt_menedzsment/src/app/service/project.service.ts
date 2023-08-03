@@ -8,7 +8,7 @@ import { Board, NewBoard } from '../model/Board';
 })
 export class ProjectService {
 
-  private baseUrl="http://localhost:8080/api";
+  private baseUrl="http://localhost:8080";
 
   constructor(
     private http: HttpClient,
@@ -23,14 +23,19 @@ export class ProjectService {
   }
 
   updateBoardColumn(column_id: string, board_id : any){
-    return this.http.put(`${this.baseUrl}/boardColumn/`+ column_id, board_id);
+    return this.http.put(`${this.baseUrl}/board/boardColumn/`+ column_id, board_id);
   }
 
   newBoard(board: NewBoard, projekt_id: number){
     return this.http.post<NewBoard>(`${this.baseUrl}/board/`+ projekt_id, board);
   }
+
   deleteBoard(id: number){
     return this.http.delete(`${this.baseUrl}/board/`+ id);
+  }
+
+  newProjekt(projekt: Projekt, user_id: number){
+    return this.http.post<Projekt>(`${this.baseUrl}/projekt/${user_id}`, projekt);
   }
 
 }

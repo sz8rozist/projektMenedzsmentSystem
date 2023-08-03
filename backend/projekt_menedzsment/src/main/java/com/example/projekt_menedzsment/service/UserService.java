@@ -1,14 +1,16 @@
 package com.example.projekt_menedzsment.service;
-
+import com.example.projekt_menedzsment.UserProjection;
 import com.example.projekt_menedzsment.model.User;
 import com.example.projekt_menedzsment.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -34,9 +36,23 @@ public class UserService {
     public User login(String username, String password) {
         // Ellenőrizd a bejelentkezési adatokat és adja vissza a felhasználót, ha sikeres
         User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
             return user;
         }
         return null;
+    }
+
+    public boolean userExists(String username) {
+        return userRepository.existsUserByUsername(username);
+    }
+
+    public User signup(User user){
+        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(hashedPassword);
+        return userRepository.save(user);
+    }
+
+    public List<UserProjection> getAllUsers(Long id) {
+        return userRepository.findAllUsersProjected(id);
     }
 }
