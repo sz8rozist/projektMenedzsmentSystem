@@ -1,11 +1,9 @@
 package com.example.projekt_menedzsment.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,6 +21,6 @@ public class Board {
     @JsonBackReference
     private Projekt projekt;
     @OneToMany(mappedBy = "board")
-    private List<BoardColumn> boardColumns;
+    private List<Task> tasks;
 
 }

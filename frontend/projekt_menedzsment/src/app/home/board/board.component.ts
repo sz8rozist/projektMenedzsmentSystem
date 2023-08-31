@@ -7,7 +7,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route } from '@angular/router';
 import { Board, NewBoard } from 'src/app/model/Board';
+import { Task } from 'src/app/model/Task';
 import { ProjectService } from 'src/app/service/project.service';
+import { TaskService } from 'src/app/service/task.service';
 
 @Component({
   selector: 'app-board',
@@ -18,11 +20,24 @@ export class BoardComponent {
   board: Board[] = [];
 
   boardForm: FormGroup;
+  boardTaskForm: FormGroup;
 
-  showModal = false;
+  showModal:boolean = false;
+  showTaskModal:boolean = false;
+
+  modalTask?: Task;
 
   openModal() {
     this.showModal = true;
+  }
+
+  openTaskModal(task: Task){
+    this.modalTask = task;
+    this.showTaskModal = true;
+  }
+
+  closeTaskModal(){
+    this.showTaskModal = false;
   }
 
   closeModal() {
@@ -30,10 +45,17 @@ export class BoardComponent {
   }
   constructor(
     private projektService: ProjectService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: TaskService
   ) {
     this.boardForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
+    });
+    this.boardTaskForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      deadline: new FormControl('',[Validators.required]),
+      description: new FormControl('', [Validators.required]),
+      board_id: new FormControl('',)
     });
   }
 
@@ -64,17 +86,17 @@ export class BoardComponent {
           destinationColumn = this.board[key].id;
         }
       }
-      var boardColumn = {
+      var task = {
         id: '',
         board_id: destinationColumn,
       };
       for (const [key, value] of Object.entries(event.previousContainer.data)) {
        // console.log(key, value);
-        boardColumn.id = value.id;
+       task.id = value.id;
       }
 
-      this.projektService
-        .updateBoardColumn(boardColumn.id, boardColumn.board_id)
+      this.taskService
+        .updateTask(task.id, task.board_id)
         .subscribe(
           (result) => {
             console.log(result);
@@ -107,6 +129,25 @@ export class BoardComponent {
         },
         (error) => console.log(error)
       );
+    }
+  }
+
+  onSubmitTaskForm(){
+    if(this.boardTaskForm.valid){
+      console.log(this.boardTaskForm.get('name')?.value, this.boardTaskForm.get('description')?.value, this.boardTaskForm.get('board_id')?.value);
+      const task: Task = {
+        name: this.boardTaskForm.get('name')?.value,
+        deadline: this.boardTaskForm.get('deadline')?.value as Date,
+        description: this.boardTaskForm.get('description')?.value,
+        board_id: this.boardTaskForm.get('board_id')?.value
+      }
+      this.taskService.newTask(task).subscribe((response) =>{
+        if(response){
+          this.boardTaskForm.reset();
+          this.closeModal();
+          this.loadBoard();
+        }
+      });
     }
   }
 

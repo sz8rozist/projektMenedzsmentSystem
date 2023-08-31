@@ -57,7 +57,8 @@
           <h3 class="mb-4 text-xl font-semibold dark:text-white">
             Általános információk
           </h3>
-          <form action="#">
+          <app-alert [show]="successUpdateProfile" [message]="'Sikeres Módosítás!'" [messageClass]="'p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400'"></app-alert>
+          <form action="#" [formGroup]="userProfileForm" (ngSubmit)="onSubmitUserProfileForm()">
             <div class="grid grid-cols-6 gap-6">
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -67,12 +68,15 @@
                 >
                 <input
                   type="text"
+                  formControlName="first_name"
                   name="first-name"
                   id="first-name"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="Bonnie"
                   required=""
                 />
+                <span *ngIf="this.userProfileForm.get('first_name')?.errors?.['required'] && (this.userProfileForm.get('first_name')?.dirty || this.userProfileForm.get('first_name')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </span>
+
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -81,6 +85,7 @@
                   >Keresztnév</label
                 >
                 <input
+                formControlName="last_name"
                   type="text"
                   name="last-name"
                   id="last-name"
@@ -88,8 +93,8 @@
                   placeholder="Green"
                   required=""
                 />
-              </div>
-              
+                <span *ngIf="this.userProfileForm.get('last_name')?.errors?.['required'] && (this.userProfileForm.get('last_name')?.dirty || this.userProfileForm.get('last_name')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </span>
+              </div>              
               <div class="col-span-6 sm:col-span-3">
                 <label
                   for="email"
@@ -97,6 +102,7 @@
                   >E-mail cím</label
                 >
                 <input
+                formControlName="email"
                   type="email"
                   name="email"
                   id="email"
@@ -104,6 +110,8 @@
                   placeholder="example@company.com"
                   required=""
                 />
+                <span *ngIf="this.userProfileForm.get('email')?.errors?.['required'] && (this.userProfileForm.get('email')?.dirty || this.userProfileForm.get('email')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </span>
+                <span *ngIf="this.userProfileForm.get('email')?.errors?.['email'] && (this.userProfileForm.get('email')?.dirty || this.userProfileForm.get('email')?.touched)" class="text-sm text-red-600"> Hibás formátum! </span>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -112,6 +120,7 @@
                   >Felhasználónév</label
                 >
                 <input
+                formControlName="username"
                   type="text"
                   name="phone-number"
                   id="phone-number"
@@ -119,6 +128,7 @@
                   placeholder="e.g. +(12)3456 789"
                   required=""
                 />
+                <span *ngIf="this.userProfileForm.get('username')?.errors?.['required'] && (this.userProfileForm.get('username')?.dirty || this.userProfileForm.get('username')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </span>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -127,6 +137,7 @@
                   >Beosztás</label
                 >
                 <input
+                formControlName="post"
                   type="text"
                   name="role"
                   id="role"
@@ -134,11 +145,13 @@
                   placeholder="React Developer"
                   required=""
                 />
+                <span *ngIf="this.userProfileForm.get('post')?.errors?.['required'] && (this.userProfileForm.get('post')?.dirty || this.userProfileForm.get('post')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </span>
               </div>
               <div class="col-span-6 sm:col-full">
                 <button
                   class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   type="submit"
+                  [disabled]="this.userProfileForm.invalid"
                 >
                   Mentés
                 </button>
@@ -152,7 +165,9 @@
           <h3 class="mb-4 text-xl font-semibold dark:text-white">
             Jelszó információk
           </h3>
-          <form action="#">
+          <app-alert [show]="successChangePw" [message]="changePwMessage" [messageClass]="'p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400'"></app-alert>
+          <app-alert [show]="errorChangePw" [message]="changePwMessage" [messageClass]="'p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400'"></app-alert>
+          <form action="#" [formGroup]="passwordForm" (ngSubmit)="onSubmitPasswordChange()">
             <div class="grid grid-cols-6 gap-6">
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -161,13 +176,15 @@
                   >Jelenlegi jelszó</label
                 >
                 <input
-                  type="text"
-                  name="current-password"
+                  type="password"
+                  name="current-password"ű
+                  formControlName="old_pw"
                   id="current-password"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="••••••••"
                   required=""
                 />
+                <div *ngIf="this.passwordForm.get('old_pw')?.errors?.['required'] && (this.passwordForm.get('old_pw')?.dirty || this.passwordForm.get('old_pw')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </div>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -179,12 +196,13 @@
                   data-popover-target="popover-password"
                   data-popover-placement="bottom"
                   type="password"
+                  formControlName="new_pw"
                   id="password"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="••••••••"
                   required=""
                 />
-              
+                <div *ngIf="this.passwordForm.get('new_pw')?.errors?.['required'] && (this.passwordForm.get('new_pw')?.dirty || this.passwordForm.get('new_pw')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </div>
               </div>
               <div class="col-span-6 sm:col-span-3">
                 <label
@@ -193,18 +211,22 @@
                   >Új jelszó mégegyszer</label
                 >
                 <input
-                  type="text"
+                  type="password"
                   name="confirm-password"
                   id="confirm-password"
+                  formControlName="confirm_new_pw"
                   class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                   placeholder="••••••••"
                   required=""
                 />
+                <div *ngIf="this.passwordForm.get('confirm_new_pw')?.errors?.['required'] && (this.passwordForm.get('confirm_new_pw')?.dirty || this.passwordForm.get('confirm_new_pw')?.touched)" class="text-sm text-red-600"> Kötelező kitölteni! </div>
+                <div *ngIf="this.passwordForm.hasError('passwordMismatch')" class="text-sm text-red-600"> A két új jelszó nem egyezik! </div>
               </div>
               <div class="col-span-6 sm:col-full">
                 <button
                   class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   type="submit"
+                  [disabled]="this.passwordForm.invalid"
                 >
                   Mentés
                 </button>
@@ -217,7 +239,7 @@
           class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800"
         >
           <div class="flow-root">
-            <h3 class="text-xl font-semibold dark:text-white">Sessions</h3>
+            <h3 class="text-xl font-semibold dark:text-white">Munkamenet</h3>
             <ul class="divide-y divide-gray-200 dark:divide-gray-700">
               <li class="py-4">
                 <div class="flex items-center space-x-4">
@@ -241,51 +263,12 @@
                     <p
                       class="text-base font-semibold text-gray-900 truncate dark:text-white"
                     >
-                      California 123.123.123.123
+                      {{user?.ipAddress}}
                     </p>
                     <p
                       class="text-sm font-normal text-gray-500 truncate dark:text-gray-400"
                     >
-                      Chrome on macOS
-                    </p>
-                  </div>
-                  <div class="inline-flex items-center">
-                    <a
-                      href="#"
-                      class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                      >Revoke</a
-                    >
-                  </div>
-                </div>
-              </li>
-              <li class="pt-4 pb-6">
-                <div class="flex items-center space-x-4">
-                  <div class="flex-shrink-0">
-                    <svg
-                      class="w-6 h-6 dark:text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <p
-                      class="text-base font-semibold text-gray-900 truncate dark:text-white"
-                    >
-                      Rome 24.456.355.98
-                    </p>
-                    <p
-                      class="text-sm font-normal text-gray-500 truncate dark:text-gray-400"
-                    >
-                      Safari on iPhone
+                      {{user?.userAgent}}
                     </p>
                   </div>
                   <div class="inline-flex items-center">
@@ -298,13 +281,6 @@
                 </div>
               </li>
             </ul>
-            <div>
-              <button
-                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                See more
-              </button>
-            </div>
           </div>
         </div>
       </div>

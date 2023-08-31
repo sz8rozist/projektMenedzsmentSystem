@@ -13,6 +13,7 @@ import { MessageBoardComponent } from './message-board/message-board.component';
 import { MessageListComponent } from './message-list/message-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DrawerComponent } from '../shared/drawer/drawer.component';
+import { AlertComponent } from '../shared/alert/alert.component';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -23,7 +24,8 @@ import { DrawerComponent } from '../shared/drawer/drawer.component';
     MessageBoardComponent,
     MessageListComponent,
     ProfileComponent,
-    DrawerComponent
+    DrawerComponent,
+    AlertComponent
   ],
   imports: [
     CommonModule,

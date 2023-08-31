@@ -1,54 +1,196 @@
 <app-sidebar></app-sidebar>
 <div class="p-4 md:ml-64 h-auto pt-20">
-  <app-modal *ngIf="showModal" [showModal]="showModal" (closeModal)="closeModal()">
-      <h3 #modalTitle class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-        Feladat hozzáadása
-      </h3>
-      <form class="space-y-6">
-        <div>
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Feladat neve</label
-          >
-          <input
-            type="email"
-            name="email"
-            id="email"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            required
-          />
-        </div>
-        <div>
-          <label
-            for="password"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Feladat leírása</label
-          >
-          <textarea
-            id="about"
-            name="about"
-            rows="3"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white resize-none"
-          ></textarea>
-        </div>
-        <div>
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >Tábla kiválasztása</label
-          >
-          <select id="country" name="country" autocomplete="country-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
-              <option *ngFor="let b of board" value="{{b.id}}">{{b.name}}</option>
-            </select>
-        </div>
-        <button
-          type="submit"
-          class="w-full text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+  <app-modal
+    *ngIf="showModal"
+    [showModal]="showModal"
+    (closeModal)="closeModal()"
+  >
+    <h3
+      #modalTitle
+      class="mb-4 text-xl font-medium text-gray-900 dark:text-white"
+    >
+      Feladat hozzáadása
+    </h3>
+    <form
+      [formGroup]="boardTaskForm"
+      class="space-y-6"
+      (ngSubmit)="onSubmitTaskForm()"
+    >
+      <div>
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Feladat neve</label
         >
-          Mentés
+        <input
+          type="email"
+          name="email"
+          formControlName="name"
+          id="email"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+        />
+      </div>
+      <div>
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Feladat határideje</label
+        >
+        <input
+          type="date"
+          formControlName="deadline"
+          id="deadline"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+          required
+        />
+      </div>
+      <div>
+        <label
+          for="password"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Feladat leírása</label
+        >
+        <textarea
+          id="about"
+          name="about"
+          rows="3"
+          formControlName="description"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white resize-none"
+        ></textarea>
+      </div>
+      <div>
+        <label
+          for="email"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Tábla kiválasztása</label
+        >
+        <select
+          id="country"
+          formControlName="board_id"
+          autocomplete="country-name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+        >
+          <option *ngFor="let b of board" value="{{ b.id }}">
+            {{ b.name }}
+          </option>
+        </select>
+      </div>
+      <button
+        type="submit"
+        class="w-full text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        Mentés
+      </button>
+    </form>
+  </app-modal>
+  <app-modal
+    *ngIf="showTaskModal"
+    [showModal]="showTaskModal"
+    (closeModal)="closeTaskModal()"
+  >
+    <div class="flex items-baseline">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="1em"
+        viewBox="0 0 512 512"
+      >
+        <path
+          d="M448 160H320V128H448v32zM48 64C21.5 64 0 85.5 0 112v64c0 26.5 21.5 48 48 48H464c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zM448 352v32H192V352H448zM48 288c-26.5 0-48 21.5-48 48v64c0 26.5 21.5 48 48 48H464c26.5 0 48-21.5 48-48V336c0-26.5-21.5-48-48-48H48z"
+        />
+      </svg>
+      <h3
+        #modalTitle
+        class="mb-4 ml-4 text-xl font-semibold text-gray-900 dark:text-white"
+      >
+        {{ modalTask?.name }}
+      </h3>
+    </div>
+    <div class="description">
+      <div class="flex items-baseline">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="1em"
+          viewBox="0 0 448 512"
+        >
+          <path
+            d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+          />
+        </svg>
+        <h5 class="leiras mb-5 ml-4 font-semibold">Leírás</h5>
+      </div>
+      <div class="ml-8">{{ modalTask?.description }}</div>
+    </div>
+    <div class="mt-4">
+      <div class="flex items-baseline">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2 0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.3-11.4C134.1 343.3 169.8 352 208 352zM448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9l0 0 0 0-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z"/></svg>
+        <h5 class="mb-5 ml-4 font-semibold">Hozzászólások</h5>
+      </div>
+      <form class="mb-6">
+        <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+            <label for="comment" class="sr-only">Your comment</label>
+            <textarea id="comment" rows="6"
+                class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                placeholder="Write a comment..." required></textarea>
+        </div>
+        <button type="submit"
+            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+            Küldés
         </button>
-      </form>
+    </form>
+        <article class="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900">
+        <footer class="flex justify-between items-center mb-2">
+            <div class="flex items-center">
+                <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white"><img
+                        class="mr-2 w-6 h-6 rounded-full"
+                        src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                        alt="Michael Gough">Michael Gough</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400"><time pubdate datetime="2022-02-08"
+                        title="February 8th, 2022">Feb. 8, 2022</time></p>
+            </div>
+            <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                type="button">
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                    </path>
+                </svg>
+                <span class="sr-only">Comment settings</span>
+            </button>
+            <!-- Dropdown menu -->
+            <div id="dropdownComment1"
+                class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdownMenuIconHorizontalButton">
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <p class="text-gray-500 dark:text-gray-400">Very straight-to-point article. Really worth time reading. Thank you! But tools are just the
+            instruments for the UX designers. The knowledge of the design tools are as important as the
+            creation of the design strategy.</p>
+        <div class="flex items-center mt-4 space-x-4">
+            <button type="button"
+                class="flex items-center text-sm text-gray-500 hover:underline dark:text-gray-400">
+                <svg aria-hidden="true" class="mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                Reply
+            </button>
+        </div>
+    </article>
+    </div>
   </app-modal>
   <div class="px-10 mt-6 flex">
     <h1 class="text-2xl font-bold">Feladatok</h1>
@@ -70,7 +212,7 @@
         <span class="block text-sm font-semibold">{{ board.name }}</span>
         <span
           class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30"
-          >{{ board.boardColumns.length }}</span
+          >{{ board.tasks.length }}</span
         >
         <button
           (click)="onDelete(board.id)"
@@ -94,14 +236,15 @@
       <div
         class="flex flex-col pb-2 bg-opacity-0"
         cdkDropList
-        [cdkDropListData]="board.boardColumns"
+        [cdkDropListData]="board.tasks"
         (cdkDropListDropped)="drop($event)"
       >
         <div
           class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
           draggable="true"
-          *ngFor="let item of board.boardColumns"
+          *ngFor="let item of board.tasks"
           cdkDrag
+          (click)="openTaskModal(item)"
         >
           <button
             class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex"
@@ -121,9 +264,9 @@
             class="flex items-center h-6 px-3 text-xs font-semibold text-pink-500 bg-pink-100 rounded-full"
             >{{ item.name }}</span
           >
-          <h4 class="mt-3 text-sm font-medium">
+          <!--<h4 class="mt-3 text-sm font-medium">
             {{ item.description }}
-          </h4>
+          </h4>-->
           <div
             class="flex items-center w-full mt-3 text-xs font-medium text-gray-400"
           >
@@ -140,7 +283,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <span class="ml-1 leading-none">Dec 12</span>
+              <span class="ml-1 leading-none">{{ item.deadline }}</span>
             </div>
             <div class="relative flex items-center ml-4">
               <svg
@@ -172,10 +315,10 @@
               </svg>
               <span class="ml-1 leading-none">1</span>
             </div>
-            <img
+            <!--<img
               class="w-6 h-6 ml-auto rounded-full"
               src="https://randomuser.me/api/portraits/women/26.jpg"
-            />
+            />-->
           </div>
         </div>
       </div>

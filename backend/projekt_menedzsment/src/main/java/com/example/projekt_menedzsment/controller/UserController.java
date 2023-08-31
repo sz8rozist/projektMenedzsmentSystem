@@ -3,7 +3,9 @@ package com.example.projekt_menedzsment.controller;
 import com.example.projekt_menedzsment.ResponseMap;
 import com.example.projekt_menedzsment.UserProjection;
 import com.example.projekt_menedzsment.model.User;
+import com.example.projekt_menedzsment.request.ChangePasswordRequest;
 import com.example.projekt_menedzsment.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +24,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*", maxAge = 36000)
+@CrossOrigin(origins = "*", maxAge = 16000)
 public class UserController {
     private final UserService userService;
 
@@ -102,5 +104,22 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable Long userid){
         User user = userService.getUserById(userid);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user){
+        User updatedUser = userService.update(userId, user);
+        if(updatedUser != null){
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt!");
+    }
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request){
+        if (userService.changePassword(request.getUserId(), request.getOldPassword(), request.getNewPassword())) {
+            return ResponseEntity.ok(ResponseMap.create("success", "Sikeres jelszóváltoztatás!"));
+        } else {
+            return ResponseEntity.ok(ResponseMap.create("error", "Helytelen régi jelszó!"));
+        }
     }
 }

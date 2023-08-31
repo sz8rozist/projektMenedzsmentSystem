@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { Response } from '../model/LoginResponse';
 import { Router } from '@angular/router';
+import { ChangePassword } from '../model/ChangePassword';
 
 @Injectable({
   providedIn: 'root',
@@ -68,7 +69,20 @@ export class AuthService {
     return user;
   }
 
+  loggedUserID() : string{
+    const login = JSON.parse(localStorage.getItem('login') as string);
+    return login.id;
+  }
+
   getUserById(userid: number){
     return this.http.get<User>(`${this.baseUrl}/get/${userid}`);
+  }
+
+  updateUser(user: User){
+    return this.http.put<User>(`${this.baseUrl}/${user.id}`, user);
+  }
+
+  changePassword(data: ChangePassword){
+    return this.http.post(`${this.baseUrl}/change-password`, data);
   }
 }

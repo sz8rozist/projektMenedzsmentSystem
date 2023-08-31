@@ -22,10 +22,6 @@ export class ProjectService {
     return this.http.get<Board[]>(`${this.baseUrl}/board/`+ projekt_id);
   }
 
-  updateBoardColumn(column_id: string, board_id : any){
-    return this.http.put(`${this.baseUrl}/board/boardColumn/`+ column_id, board_id);
-  }
-
   newBoard(board: NewBoard, projekt_id: number){
     return this.http.post<NewBoard>(`${this.baseUrl}/board/`+ projekt_id, board);
   }
@@ -37,5 +33,6 @@ export class ProjectService {
   newProjekt(projekt: Projekt, user_id: number){
     return this.http.post<Projekt>(`${this.baseUrl}/projekt/${user_id}`, projekt);
   }
+
 
 }

@@ -1,7 +1,7 @@
 package com.example.projekt_menedzsment.controller;
 
 import com.example.projekt_menedzsment.model.Board;
-import com.example.projekt_menedzsment.model.BoardColumn;
+import com.example.projekt_menedzsment.model.Task;
 import com.example.projekt_menedzsment.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +24,6 @@ public class BoardController {
         return boardService.getBoardByProjektId(projekt_id);
     }
 
-    @PutMapping("/boardColumn/{board_column_id}")
-    public ResponseEntity<?> updateBoardColumn(@RequestBody Long new_board_id, @PathVariable Long board_column_id){
-        System.out.println(new_board_id + board_column_id);
-        BoardColumn updated = boardService.updateBoardColumn(new_board_id, board_column_id);
-        if(updated != null){
-            return new  ResponseEntity<>(updated, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
 
     @PostMapping("/{projekt_id}")
     public ResponseEntity<?> newBoard(@RequestBody Board newBoard, @PathVariable Long projekt_id){

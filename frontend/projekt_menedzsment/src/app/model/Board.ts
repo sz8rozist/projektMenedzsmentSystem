@@ -1,9 +1,9 @@
-import { Column } from './Column';
+import { Task } from './Task';
 
 export interface Board{
     id?: number,
     name: string,
-    boardColumns: Column[]
+    tasks: Task[]
 }
 
 export interface NewBoard{
