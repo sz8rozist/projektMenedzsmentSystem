@@ -55,4 +55,8 @@ public class UserService {
     public List<UserProjection> getAllUsers(Long id) {
         return userRepository.findAllUsersProjected(id);
     }
+
+    public User getUserById(Long userid) {
+        return userRepository.findUserById(userid);
+    }
 }

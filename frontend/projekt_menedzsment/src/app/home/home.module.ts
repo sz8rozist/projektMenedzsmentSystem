@@ -8,11 +8,11 @@ import { ProjektListComponent } from './projekt-list/projekt-list.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { ModalComponent } from './modal/modal.component';
+import { ModalComponent } from '../shared/modal/modal.component';
 import { MessageBoardComponent } from './message-board/message-board.component';
 import { MessageListComponent } from './message-list/message-list.component';
 import { ProfileComponent } from './profile/profile.component';
-import { DrawerComponent } from './drawer/drawer.component';
+import { DrawerComponent } from '../shared/drawer/drawer.component';
 @NgModule({
   declarations: [
     HomeComponent,

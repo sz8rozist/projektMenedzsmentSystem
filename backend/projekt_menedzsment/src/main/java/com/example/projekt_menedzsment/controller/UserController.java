@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*", maxAge = 0)
+@CrossOrigin(origins = "*", maxAge = 36000)
 public class UserController {
     private final UserService userService;
 
@@ -96,5 +96,11 @@ public class UserController {
     public ResponseEntity<?> loadUsers(@PathVariable Long userid){
         List<UserProjection> users = userService.getAllUsers(userid);
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/get/{userid}")
+    public ResponseEntity<?> getUser(@PathVariable Long userid){
+        User user = userService.getUserById(userid);
+        return ResponseEntity.ok(user);
     }
 }

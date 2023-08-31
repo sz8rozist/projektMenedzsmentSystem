@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { Board } from 'src/app/model/Board';
 
 @Component({
   selector: 'app-modal',
@@ -8,7 +7,6 @@ import { Board } from 'src/app/model/Board';
 })
 export class ModalComponent {
   @Output() closeModal = new EventEmitter<void>();
-  @Input() boards?: Board[];
   @Input() showModal?: boolean;
 
   close() {

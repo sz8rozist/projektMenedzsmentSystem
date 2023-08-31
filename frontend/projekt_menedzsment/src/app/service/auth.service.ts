@@ -67,4 +67,8 @@ export class AuthService {
     };
     return user;
   }
+
+  getUserById(userid: number){
+    return this.http.get<User>(`${this.baseUrl}/get/${userid}`);
+  }
 }
