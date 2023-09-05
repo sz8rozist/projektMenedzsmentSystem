@@ -18,6 +18,10 @@ export class ProjectService {
     return this.http.get<Projekt[]>(`${this.baseUrl}/projekt/pagination/${offset}/${pageSize}`);
   }
 
+  listAllProject(){
+    return this.http.get<Projekt[]>(`${this.baseUrl}/projekt`);
+  }
+
   listBoard(projekt_id: number){
     return this.http.get<Board[]>(`${this.baseUrl}/board/`+ projekt_id);
   }

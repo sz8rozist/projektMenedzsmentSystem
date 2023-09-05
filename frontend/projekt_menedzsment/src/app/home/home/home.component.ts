@@ -22,6 +22,7 @@ export class HomeComponent {
   totalPages = 0;
   showUpdateDrawer = false;
   updateProjektForm: FormGroup;
+  isHovered = false;
   constructor(
     private authService: AuthService,
     private projektService: ProjectService
@@ -123,5 +124,12 @@ export class HomeComponent {
         }
       });
     }
+  }
+
+  addClass(){
+    this.isHovered = true;
+  }
+  removeClass(){
+    this.isHovered = false;
   }
 }

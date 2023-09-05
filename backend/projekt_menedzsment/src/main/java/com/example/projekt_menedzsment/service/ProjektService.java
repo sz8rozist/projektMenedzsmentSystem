@@ -58,4 +58,12 @@ public class ProjektService {
         }
        return null;
     }
+
+    public Projekt getProjektById(Long id){
+        Projekt p = projektRepository.findById(id).orElse(null);
+        if(p == null){
+            throw new ApiRequestException("Nem található projekt");
+        }
+        return p;
+    }
 }

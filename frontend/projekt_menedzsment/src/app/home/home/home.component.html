@@ -1,5 +1,6 @@
-<app-sidebar></app-sidebar>
-<div class="md:ml-64 h-auto pt-20">
+
+
+  <app-speed-dial [isHovered]="isHovered" (mouseEnterEvent)="addClass()" (mouseLeaveEvent)="removeClass()"></app-speed-dial>
   <app-projekt-list (drawerEvent)="openDrawer()" (openUpdateDrawer)="openUpdateDrawer($event)" (deleteEvent)="deleteProjekt()" (changePageEvent)="changePage($event)" [projects]="projects" [recordCount]="recordCount" [pageSize]="numberOfElements" [totalPages]="totalPages" [currentPage]="currentPage"></app-projekt-list>
   <app-drawer [showDrawer]="showDrawer" (closeDrawer)="closeDrawer()">
     <h5
@@ -78,9 +79,6 @@
     </div>
   </form>
   </app-drawer>
-
-  <!-- UPDATE DRAWER -->
-
   <app-drawer [showDrawer]="showUpdateDrawer" (closeDrawer)="closeUpdateDrawer()">
     <h5
       id="drawer-label"
@@ -163,4 +161,4 @@
       </div>
     </form>
   </app-drawer>
-</div>
+

@@ -76,4 +76,8 @@ export class ProjektListComponent {
   openEditDrawer(projekt: Projekt){
     this.openUpdateDrawer.emit(projekt);
   }
+
+  navigateToFiles(projekt: Projekt){
+    this.router.navigate(["/home/files", projekt.id]);
+  }
 }

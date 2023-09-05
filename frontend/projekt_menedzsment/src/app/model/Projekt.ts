@@ -1,3 +1,5 @@
+import { Board } from "./Board";
+
 export interface Projekt {
     id?: number;
     name: string;
@@ -7,5 +9,6 @@ export interface Projekt {
       password: string;
     };
     description: string;
+    boards?: Board[];
   }
   

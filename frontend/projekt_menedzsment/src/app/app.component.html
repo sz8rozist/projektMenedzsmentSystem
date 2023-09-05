@@ -1,1 +1,6 @@
-<router-outlet></router-outlet>
+<div class="bg-gray-900 min-h-full">
+  <app-navbar [imageUrl]="imageUrl" [user]="user"></app-navbar>
+  <div class="p-2 md:ml-56 md:mr-56 h-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>

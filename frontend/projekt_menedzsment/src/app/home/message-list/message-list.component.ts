@@ -32,7 +32,6 @@ export class MessageListComponent {
     this.loadMessages();
     if(this.selectedUser?.readedMessage && this.selectedUser.readedMessage > 0){
       this.messageService.markReadedMessage(Number(this.selectedUser?.id), Number(this.senderUser?.id)).subscribe(response =>{
-        console.log(response);
         if(response && this.selectedUser){
           this.sendDataToParent(this.selectedUser);
         }
@@ -49,6 +48,7 @@ export class MessageListComponent {
     const senderUser = this.authService.loggedUser();
     this.senderUser = senderUser;
     if (senderUser.id && this.selectedUser?.id) {
+      console.log(senderUser.id, this.selectedUser?.id);
       this.messageService
         .getMessages(senderUser.id, Number(this.selectedUser.id))
         .subscribe((messages: Message[]) => {

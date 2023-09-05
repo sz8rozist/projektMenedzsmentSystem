@@ -11,3 +11,8 @@ spring:
   mvc:
     content negotiation:
       defaultContentType: application/json
+  servlet:
+    multipart: enabled
+    enabled: true
+    max-file-size: 100000000000MB
+    max-request-size: 100000000000MB

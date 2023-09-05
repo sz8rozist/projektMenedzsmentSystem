@@ -1,4 +1,4 @@
-<div class="mx-auto px-4 md:px-12">
+<div class="mx-auto px-4 md:px-12 pt-20">
   <button
     type="submit"
     (click)="openDrawer()"
@@ -24,7 +24,7 @@
           </th>
           <th scope="col" class="px-6 py-3">Projekt név</th>
           <th scope="col" class="px-6 py-3">Projekt leírás</th>
-          <th scope="col" class="px-6 py-3">Action</th>
+          <th scope="col" class="px-6 py-3">Műveletek</th>
         </tr>
       </thead>
       <tbody>
@@ -62,6 +62,13 @@
               Feladatok
             </button>
             <button
+            (click)="navigateToFiles(project)"
+              type="button"
+              class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+            >
+              Fájlok
+            </button>
+            <button
               type="button"
               (click)="openEditDrawer(project)"
               class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -80,7 +87,7 @@
       </tbody>
     </table>
     <nav
-      class="flex items-center justify-between p-4"
+      class="flex items-center justify-between p-4 dark:bg-gray-700"
       aria-label="Table navigation"
     >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
@@ -120,4 +127,3 @@
     </nav>
   </div>
 </div>
-
