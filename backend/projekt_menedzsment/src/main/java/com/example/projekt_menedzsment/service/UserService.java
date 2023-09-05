@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -15,14 +16,12 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    @Autowired
+    private  UserRepository userRepository;
+    @Autowired
     private HttpServletRequest request;
     private static final String SECRET_KEY = "titkoskulcs"; // Titkos kulcs a JWT token aláírásához
 
-    public UserService(UserRepository userRepository, HttpServletRequest request) {
-        this.userRepository = userRepository;
-        this.request = request;
-    }
 
     public String generateToken(User user) {
         Date now = new Date();

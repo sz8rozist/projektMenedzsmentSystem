@@ -24,7 +24,7 @@ public class Projekt {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-    @OneToMany(mappedBy = "projekt")
+    @OneToMany(mappedBy = "projekt", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Board> boards;
     @Column(name = "description")
     private String description;

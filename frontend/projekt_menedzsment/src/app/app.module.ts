@@ -15,7 +15,7 @@ import { SignupComponent } from './signup/signup.component';
     AppComponent,
     SigninComponent,
     NotFoundComponent,
-    SignupComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ import { MessageListComponent } from './message-list/message-list.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DrawerComponent } from '../shared/drawer/drawer.component';
 import { AlertComponent } from '../shared/alert/alert.component';
+import { IncrementPipe } from '../pipe/increment.pipe';
 @NgModule({
   declarations: [
     HomeComponent,
@@ -25,7 +26,8 @@ import { AlertComponent } from '../shared/alert/alert.component';
     MessageListComponent,
     ProfileComponent,
     DrawerComponent,
-    AlertComponent
+    AlertComponent,
+    IncrementPipe
   ],
   imports: [
     CommonModule,

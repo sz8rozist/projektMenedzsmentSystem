@@ -1,11 +1,13 @@
 package com.example.projekt_menedzsment.controller;
 
-import com.example.projekt_menedzsment.ResponseMap;
+import com.example.projekt_menedzsment.exception.ApiRequestException;
+
 import com.example.projekt_menedzsment.UserProjection;
 import com.example.projekt_menedzsment.model.User;
 import com.example.projekt_menedzsment.request.ChangePasswordRequest;
+import com.example.projekt_menedzsment.response.LoginResponse;
 import com.example.projekt_menedzsment.service.UserService;
-import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -26,26 +28,23 @@ import java.util.UUID;
 @RequestMapping("/users")
 @CrossOrigin(origins = "*", maxAge = 16000)
 public class UserController {
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User loginRequest) {
+    public LoginResponse<User> login(@RequestBody User loginRequest) {
         User user = userService.login(loginRequest.getUsername(), loginRequest.getPassword());
         if (user != null) {
             String token = userService.generateToken(user);
-            return ResponseEntity.ok().body(ResponseMap.create("token", token, "username", user.getUsername(), "img", user.getImg(), "email", user.getEmail(), "id", user.getId().toString()));
+            return new LoginResponse<>(token, user);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMap.create("error", "Sikertelen bejelentkezés!"));
+        throw new ApiRequestException("Sikertelen bejelentkezés!");
     }
 
     @PostMapping("/image")
     public ResponseEntity<?> uploadImage(@RequestPart("file") MultipartFile file){
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(ResponseMap.create("error","A feltöltendő fájl üres"));
+            throw new ApiRequestException("A feltöltendő fájl üres!");
         }
         try {
             // Egyedi fájlnév generálása a képnek
@@ -56,9 +55,9 @@ public class UserController {
             Files.write(path, bytes);
 
             // Sikeres mentés esetén visszatérünk a fájlnévvel
-            return ResponseEntity.ok().body(ResponseMap.create("fileName", fileName));
+            return ResponseEntity.ok().body(fileName);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseMap.create("error","A fájl feltöltése sikertelen"));
+            throw new ApiRequestException("A fájl feltöltése sikertelen!");
         }
     }
 
@@ -71,10 +70,10 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User signupUser) {
         User user = userService.signup(signupUser);
-        if (user != null) {
-            return ResponseEntity.ok(HttpStatus.OK);
+        if (user == null) {
+            throw new ApiRequestException("Sikertelen regisztráció!");
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseMap.create("error","Sikertelen regisztráció"));
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/images/{imageName}")
@@ -90,7 +89,7 @@ public class UserController {
                     .body(image);
         } else {
             // Return a 404 Not Found response when the image is not found
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseMap.create("error", "Nem található a kép!"));
+            throw new ApiRequestException("Nem található a kép!");
         }
     }
 
@@ -103,23 +102,26 @@ public class UserController {
     @GetMapping("/get/{userid}")
     public ResponseEntity<?> getUser(@PathVariable Long userid){
         User user = userService.getUserById(userid);
+        if(user == null){
+            throw new ApiRequestException("Felhasználó ezzel az azonosítóval: " + userid + " nem található!");
+        }
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user){
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user){
         User updatedUser = userService.update(userId, user);
-        if(updatedUser != null){
-            return ResponseEntity.ok(user);
+        if(updatedUser == null){
+            throw new ApiRequestException("Sikertelen frissítés");
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt!");
+        return ResponseEntity.ok(updatedUser);
     }
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request){
         if (userService.changePassword(request.getUserId(), request.getOldPassword(), request.getNewPassword())) {
-            return ResponseEntity.ok(ResponseMap.create("success", "Sikeres jelszóváltoztatás!"));
+            return ResponseEntity.ok("Sikeres jelszóváltoztatás!");
         } else {
-            return ResponseEntity.ok(ResponseMap.create("error", "Helytelen régi jelszó!"));
+            throw new ApiRequestException("Helytelen régi jelszó!");
         }
     }
 }

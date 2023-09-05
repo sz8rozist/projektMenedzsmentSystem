@@ -14,8 +14,8 @@ export class ProjectService {
     private http: HttpClient,
     ){}
 
-  listProject(id: number){
-    return this.http.get<Projekt[]>(`${this.baseUrl}/projekt/`+id);
+  listProject(offset: number, pageSize: number){
+    return this.http.get<Projekt[]>(`${this.baseUrl}/projekt/pagination/${offset}/${pageSize}`);
   }
 
   listBoard(projekt_id: number){
@@ -32,6 +32,14 @@ export class ProjectService {
 
   newProjekt(projekt: Projekt, user_id: number){
     return this.http.post<Projekt>(`${this.baseUrl}/projekt/${user_id}`, projekt);
+  }
+
+  deleteProjekt(id: number){
+    return this.http.delete(`${this.baseUrl}/projekt/${id}`);
+  }
+
+  updateProjekt(projekt: Projekt){
+    return this.http.put(`${this.baseUrl}/projekt/${projekt.id}`, projekt);
   }
 
 

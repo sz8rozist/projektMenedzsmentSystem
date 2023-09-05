@@ -1,45 +1,123 @@
 <div class="mx-auto px-4 md:px-12">
-  <button type="submit" (click)="openDrawer()" class="text-white justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+  <button
+    type="submit"
+    (click)="openDrawer()"
+    class="mb-5 text-white justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+  >
     Projekt hozzáadása
-</button>
-  <div class="flex flex-wrap -mx-1 lg:-mx-4">
-    <!-- Column -->
-    <div  (click)="loadBoard(project)" class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"  *ngFor="let project of projects">
-      <!-- Article -->
-      <article class="overflow-hidden rounded-lg shadow-lg">
-        <header
-          class="flex items-center justify-between leading-tight p-2 md:p-4"
+  </button>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="p-4">
+            <div class="flex items-center">
+              <input
+                id="checkbox-all-search"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label for="checkbox-all-search" class="sr-only">checkbox</label>
+            </div>
+          </th>
+          <th scope="col" class="px-6 py-3">Projekt név</th>
+          <th scope="col" class="px-6 py-3">Projekt leírás</th>
+          <th scope="col" class="px-6 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+          *ngFor="let project of projects"
         >
-          <h1 class="text-lg">
-            <a class="no-underline hover:underline text-black" href="#">
-              {{project.name}}
-            </a>
-          </h1>
-          <p class="text-grey-darker text-sm">{{project.description}}</p>
-        </header>
-
-        <footer
-          class="flex items-center justify-between leading-none p-2 md:p-4"
-        >
-          <a
-            class="flex items-center no-underline hover:underline text-black"
-            href="#"
+          <td class="w-4 p-4">
+            <div class="flex items-center">
+              <input
+                id="checkbox-table-search-1"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label for="checkbox-table-search-1" class="sr-only"
+                >checkbox</label
+              >
+            </div>
+          </td>
+          <th
+            scope="row"
+            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
-            <img
-              alt="Placeholder"
-              class="block rounded-full"
-              src="https://picsum.photos/32/32/?random"
-            />
-            <p class="ml-2 text-sm">Author Name</p>
-          </a>
-          <a class="no-underline text-grey-darker hover:text-red-dark" href="#">
-            <span class="hidden">Like</span>
-            <i class="fa fa-heart"></i>
-          </a>
-        </footer>
-      </article>
-      <!-- END Article -->
-    </div>
-    <!-- END Column -->
+            {{ project.name }}
+          </th>
+          <td class="px-6 py-4">
+            {{ project.description }}
+          </td>
+          <td class="px-6 py-4 w-1/3">
+            <button
+              type="button"
+              (click)="navigateToBoard(project.id)"
+              class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            >
+              Feladatok
+            </button>
+            <button
+              type="button"
+              (click)="openEditDrawer(project)"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >
+              Szerkesztés
+            </button>
+            <button
+              type="button"
+              (click)="deleteProjekt(project)"
+              class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+            >
+              Törlés
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav
+      class="flex items-center justify-between p-4"
+      aria-label="Table navigation"
+    >
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
+        >Showing
+        <span class="font-semibold text-gray-900 dark:text-white">{{
+          pageSize
+        }}</span>
+        of
+        <span class="font-semibold text-gray-900 dark:text-white">{{
+          recordCount
+        }}</span></span
+      >
+      <ul *ngIf="pages.length > 0" class="inline-flex -space-x-px text-sm h-8">
+        <li>
+          <span
+            (click)="previousPage()"
+            class="cursor-pointer flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >Előző</span
+          >
+        </li>
+        <li *ngFor="let page of pages; index as i">
+          <span
+            (click)="onPageChange(i)"
+            [ngClass]="{ 'bg-blue-50': i == currentPage }"
+            class="flex cursor-pointer items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+            >{{ page | increment }}</span
+          >
+        </li>
+        <li>
+          <span
+            (click)="nextPage()"
+            class="cursor-pointer flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >Következő</span
+          >
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
+

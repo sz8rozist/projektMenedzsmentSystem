@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.Date;
 
@@ -16,9 +17,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
+    @NotNull
     private String name;
     @Temporal(TemporalType.DATE)
     @Column(name = "deadline")
+    @NotNull
     private Date deadline;
     @Column(name = "description")
     private String description;

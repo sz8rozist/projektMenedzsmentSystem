@@ -35,11 +35,11 @@ export class SigninComponent {
         password: this.signinForm.get('password')?.value as string,
       };
       this.authService.signin(user).subscribe(
-        (response) => {
+        (response: any) => {
           if (response.token != null) {
-            const user = {token: response.token, username: response.username, email: response.email, img: response.img, id: response.id}
+            const user = {token: response.token, username: response.user.username, email: response.user.email, img: response.user.img, id: response.user.id}
             localStorage.setItem('login', JSON.stringify(user));
-            this.router.navigate(['/home']);
+           this.router.navigate(['/home']);
           } else {
             //Sikertelen login
             this.errorMsg = 'Sikertelen bejelentkezés';

@@ -1,7 +1,9 @@
 package com.example.projekt_menedzsment.controller;
 
+import com.example.projekt_menedzsment.exception.ApiRequestException;
 import com.example.projekt_menedzsment.model.Task;
 import com.example.projekt_menedzsment.service.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,19 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class TaskController {
 
-    private final TaskService taskService;
-    public TaskController(TaskService taskService){
-        this.taskService = taskService;
-    }
+    @Autowired
+    private  TaskService taskService;
 
     @PutMapping("/{board_column_id}")
-    public ResponseEntity<?> updateBoardColumn(@RequestBody Long new_board_id, @PathVariable Long board_column_id){
-        System.out.println(new_board_id + board_column_id);
-        Task updated = taskService.updateBoardColumn(new_board_id, board_column_id);
+    public ResponseEntity<?> updateTask(@RequestBody Long new_board_id, @PathVariable Long task_id){
+        Task updated = taskService.updateBoardColumn(new_board_id, task_id);
         if(updated != null){
-            return new  ResponseEntity<>(updated, HttpStatus.OK);
+            return ResponseEntity.ok(updated);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        throw new ApiRequestException("Sikertelen feladat frissítés!");
     }
 
 
@@ -33,6 +32,6 @@ public class TaskController {
         if(newTask != null){
             return ResponseEntity.ok(newTask);
         }
-        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Hiba történt");
+        throw new ApiRequestException("Sikertelen feladat hozzáadás!");
     }
 }
